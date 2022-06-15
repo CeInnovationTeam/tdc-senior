@@ -3,7 +3,8 @@
 
 Acesse os labs! ⬇
 
-- [Lab. #4 - Automating Deployment](/Lab.%20%234%20-%20Automating%20Deployment)
+Dia 21/06 - Deploy sem Medo: Automatize seu Desenvolvimento
+- [Lab. #1 - Deployment Automation](/Lab.%20%234%20-%20Deployment%20Automation)
 
 Aproveite e confira as certificações para Developers na OCI! 💻🚀
 - 🏅 [OCI Developer Associate 2021](https://mylearn.oracle.com/learning-path/become-an-oci-developer-associate/35644/102197)

@@ -1,17 +1,19 @@
-# Lab. #4 - Automating Deployment
+# Lab. #1 - Deployment Automation
 
-Nesta etapa, você construirá uma esteira de desenvolvimento, com o serviço **OCI DevOps**, que irá automatizar a entrega de uma aplicação conteinerizada a um cluster Kubernetes!
+Neste lab, você construirá uma esteira de desenvolvimento, com o serviço **OCI DevOps**, que irá automatizar a entrega da aplicação MuShop, de forma conteinerizada, a um cluster Kubernetes!
+
+Caso queira aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
 
 - 🌀 [Página oficial do OCI DevOps](https://www.oracle.com/br/devops/devops-service/)
 - 🧾 [Documentação do OCI DevOps](https://docs.oracle.com/pt-br/iaas/Content/devops/using/home.htm)
 
 **Você aprenderá todo o passo-a-passo dessa implementação:**
- - [Pre Reqs: Coleta de informações relevantes ao processo](#PreReqs)
- - [Passo 1: Clonar o repositório e movimentar conteúdo para repositório do projeto DevOps](#Passo1)
+ - [Pre Reqs: Coleta de dados necessários](#PreReqs)
+ - [Passo 1: Espelhando um repo no github para o projeto OCI DevOps](#Passo1)
  - [Passo 2: Criar e configurar processo de Build (CI)](#Passo2)
  - [Passo 3: Criar e configurar entrega de artefatos (CI)](#Passo3)
  - [Passo 4: Criar e configurar entrega de aplicação a cluster kubernetes (CD)](#Passo4)
- - [Passo 5: Configurar gatilho do fluxo e conectar pipelines de CI/CD](#Passo5)
+ - [Passo 5: Configurar trigger do fluxo e conectar pipelines de CI/CD](#Passo5)
  - [Passo 6: Execução e testes](#Passo6)
 
  - - -
@@ -20,9 +22,7 @@ Nesta etapa, você construirá uma esteira de desenvolvimento, com o serviço **
 
  1. Faça o [login](https://www.oracle.com/cloud/sign-in.html) em sua conta na OCI. 
 
- 2. Realize os labs [Lab. #1](../Lab.%20%231%20-%20Resource%20Provisioning) e [Lab #2](../Lab.%20%232%20-%20Developing%20Cloud%20Native%20Applications%20-%20Parte%201).
-
- 3. No 🍔 menu hambúrguer, acesse: **Observability & Management** → **Application Performance** → **Administration**.
+ 2. No menu hambúrguer 🍔, acesse: **Observability & Management** → **Application Performance** → **Administration**.
 
  ![](./Images/005-LAB4.png)
 
