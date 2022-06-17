@@ -1,79 +1,111 @@
 # Lab. #1 - Deployment Automation
 
-Neste lab, você construirá uma esteira de desenvolvimento, com o serviço **OCI DevOps**, que irá automatizar a entrega da aplicação MuShop, de forma conteinerizada, a um cluster Kubernetes!
+Neste lab, você construirá uma esteira de desenvolvimento com o serviço **OCI DevOps**, que irá automatizar a entrega da aplicação MuShop, de forma conteinerizada, a um cluster Kubernetes na OCI!
 
-Caso queira aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
+Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
 
 - 🌀 [Página oficial do OCI DevOps](https://www.oracle.com/br/devops/devops-service/)
 - 🧾 [Documentação do OCI DevOps](https://docs.oracle.com/pt-br/iaas/Content/devops/using/home.htm)
 
-**Você aprenderá todo o passo-a-passo dessa implementação:**
- - [Pre Reqs: Coleta de dados necessários](#PreReqs)
- - [Passo 1: Espelhando um repo no github para o projeto OCI DevOps](#Passo1)
+**Confira todo o passo-a-passo dessa implementação:**
+ - [Pre Reqs: Coletar dados necessários](#PreReqs)
+ - [Passo 1: Espelhar um repo no github para o projeto OCI DevOps](#Passo1)
  - [Passo 2: Criar e configurar processo de Build (CI)](#Passo2)
  - [Passo 3: Criar e configurar entrega de artefatos (CI)](#Passo3)
  - [Passo 4: Criar e configurar entrega de aplicação a cluster kubernetes (CD)](#Passo4)
- - [Passo 5: Configurar trigger do fluxo e conectar pipelines de CI/CD](#Passo5)
- - [Passo 6: Execução e testes](#Passo6)
+ - [Passo 5: Configurar trigger de início do fluxo e conectar pipelines de CI/CD](#Passo5)
+ - [Passo 6: Validar implementação](#Passo6)
 
  - - -
 
- ## <a name="PreReqs"></a> Pre Reqs: Coleta de informações relevantes ao processo
-
- 1. Faça o [login](https://www.oracle.com/cloud/sign-in.html) em sua conta na OCI. 
-
- 2. No menu hambúrguer 🍔, acesse: **Observability & Management** → **Application Performance** → **Administration**.
-
- ![](./Images/005-LAB4.png)
-
- 4.  No canto esquerdo inferior, em **Scope**, valide se o **Comparment** criado no [Lab. #1](../Lab.%20%231%20-%20Resource%20Provisioning) está selecionado.
-
- 5. Selecione o domínio APM listado.
-   
- ![](./Images/007-LAB4.png)
-
- 6. Copie a chave privada do domínio para um bloco de notas.
-
- ![](./Images/008_1-LAB4.PNG)
+ ## <a name="PreReqs"></a> Pre Reqs: Coletar dados necessários
  
- É isso! Cumprimos todos os pré-requisitos para o laboratório!
+Vamos coletar alguns dados na tenancy da OCI que serão utilizados ao logo do laboratório, recomendamos que as anote em um bloco de notas para ter sempre em mãos de modo fácil. Serão coletadas as seguintes informações:
+
+```bash
+Tenancy Namespace:
+Auth Token:
+Código da Região:
+```
+
+### Tenancy Namespace
+
+1. Faça o [login](https://www.oracle.com/cloud/sign-in.html) em sua conta na OCI. 
+
+2. No menu do lado direto, no ícone do usuário, clique no nome da sua tenancy.
+
+![](./Images/namespace1.png)
+
+3. Agora copie o namespace para o bloco de notas.
+
+![](./Images/namespace2.png)
+
+### Username e Auth Token
+
+1. No menu do lado direto no icone do usuário, clique no nome do seu usuário.
+
+![](./Images/user1.png)
+
+2. Copie o dado destacado em vermelho e insira no seu bloco de notas. Este será o seu 'username'.
+
+![](./Images/username.png)
+
+3. Depois, desça a página até visualizar 'Resources', clique em **Auth Tokens** e em **Generate Token**, para gerar um novo token.
+
+![](./Images/user2.png)
+
+4. Insira uma descrição.
+
+![](./Images/token_description.png)
+
+5. Salve o auth token gerado no bloco de notas.
+
+![](./Images/generated_token.png)
+
+### Código da Região
+1. Para a região US East (Ashburn): 'iad'.
+
+2. Para a região de Brazil East (Sao Paulo): 'gru'.
+
+3. Para as demais regiões, confira neste [link](https://docs.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#regional-availability).
+
+2. Copie o valor correspondente à sua região para o bloco de notas.
+ 
+É isso! Cumprimos todos os pré-requisitos para o laboratório! Vamos para os próximos passos!
 
  - - -
 
- ## <a name="Passo1"></a> Passo 1: Clonar o repositório e movimentar conteúdo para repositório do projeto DevOps
+ ## <a name="Passo1"></a> Passo 1: Espelhar um repo no github para o projeto OCI DevOps
 
- 1. Acesse o **Cloud Shell**, clicando no ícone como na imagem abaixo.
- 
- ![](./Images/013-LAB4.png)
+1. Crie um repo no github.
 
+![](./Images/mushop_repo.png)
 
- 2. Clone o repositório do projeto.
-
- ```shell
- git clone https://github.com/CeInnovationTeam/BackendFTDev.git
- ```
-
- 3. No 🍔 menu de hambúrguer, acesse: **Developer Services** → **DevOps** → **Projects**.
+2. Na OCI, no menu de hambúrguer 🍔, acesse: **Developer Services** → **DevOps** → **Projects**.
   
  ![](./Images/014-LAB4.png)
 
- 4. Acesse o projeto listado (criado no provisionamento do Resource Manager 😄).
+3. No compartment criado anteriormente, clique em **Create DevOps Project**.
   
- ![](./Images/015-LAB4.png)
+![](./Images/create_project.png)
 
- 5. Na página do projeto, clique em **Create repository**.
+4. Na página do projeto, clique em **Code Repositories**.
 
- ![](./Images/016-LAB4.png)
+![](./Images/code_repositories.png)
 
- 6. Preencha o formulário da seguinte forma:
+5. Clique em **Mirror repository**.
 
-   - **Name:** ftRepo
-   - **Description:** (Defina uma descrição qualquer).
-   - **Default branch:** main
+![](./Images/mirror_repo1.png)
 
- ![](./Images/017-LAB4.png)
+6. Preencha o formulário da seguinte forma:
 
- 7. Na página do repositório recém-criado, clique em **HTTPS** e:
+  - **Name:** ftRepo
+  - **Description:** (Defina uma descrição qualquer).
+  - **Default branch:** main
+
+![](./Images/017-LAB4.png)
+
+7. Na página do repositório recém-criado, clique em **HTTPS** e:
 
 - [1] Copie para o bloco de notas a informação do usuário a ser utilizado para trabalhar com o git (**Usuário Git**).
 - [2] Copie o comando git clone e o execute no Cloud Shell.
