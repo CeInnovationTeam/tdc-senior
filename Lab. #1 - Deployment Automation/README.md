@@ -4,8 +4,8 @@ Neste lab, você construirá uma esteira de desenvolvimento com o serviço **OCI
 
 Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
 
-- 🌀 [Página oficial do OCI DevOps](https://www.oracle.com/br/devops/devops-service/)
-- 🧾 [Documentação do OCI DevOps](https://docs.oracle.com/pt-br/iaas/Content/devops/using/home.htm)
+- 🌀 [Página oficial do OCI DevOps](https://www.oracle.com/devops/devops-service/)
+- 🧾 [Documentação do OCI DevOps](https://docs.oracle.com/en-us/iaas/Content/devops/using/home.htm)
 
 **Confira todo o passo-a-passo dessa implementação:**
  - [Pre Reqs: Coletar dados necessários](#PreReqs)
@@ -73,56 +73,124 @@ Código da Região:
  
 É isso! Cumprimos todos os pré-requisitos para o laboratório! Vamos para os próximos passos!
 
- - - -
+- - -
 
- ## <a name="Passo1"></a> Passo 1: Espelhar um repo no github para o projeto OCI DevOps
+## <a name="Passo1"></a> Passo 1: Espelhar um repo no github para o projeto OCI DevOps
+
+### GitHub repo e Personal Access Token
 
 1. Crie um repo no github.
 
 ![](./Images/mushop_repo.png)
 
+2. Clique no ícone do seu perfil e em **Settings**.
+
+![](./Images/github_PAT1.png)
+
+3. No menu do lado esquerdo, clique em **Developer settings**.
+
+![](./Images/github_PAT2.png)
+
+4. Feito isto, clique em **Personal access tokens** e **Generate new token**.
+
+![](./Images/github_PAT3.png)
+
+5. Insira uma nota descritiva e selecione o tempo de expiração que deseja. Para o escopo, selecione **public_repo**.
+
+![](./Images/github_PAT4.png)
+
+6. Ao final da página, clique em **Generate Token**.
+
+![](./Images/github_PAT5.png)
+
+7. Copie o token gerado.
+
+![](./Images/github_PAT6.png)
+
+### Espelhamento de repo no OCI DevOps
+Nesse momento, vamos provisionar um **OCI Vault** para armazenar o token gerado. O **OCI Vault** é um serviço da OCI que permite o gerenciamento de forma segura de credencias e outros dados sensíveis com chaves de criptografia.
+
+Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
+
+- 🔑 [Página oficial do OCI Vault](https://www.oracle.com/security/cloud-security/key-management/)
+- 🧾 [Documentação do OCI Vault](https://docs.oracle.com/en-us/iaas/Content/KeyManagement/home.htm)
+
+1. Na OCI, no menu de hambúrguer 🍔, acesse: **Identity & Security** → **Vault**.
+
+![](./Images/oci_vault1.png)
+
+2. Clique em **Create Vault**.
+
+![](./Images/oci_vault2.png)
+
+3. Atribua um nome ao seu vault e clique em **Create Vault**.
+
+![](./Images/oci_vault3.png)
+
+4. Para criar uma Master Encryption Key, clique em **Create Key**.
+
+![](./Images/oci_vault_create1.png)
+
+5. Selecione o 'Protection Mode' como **Software**, atribua um nome à chave e clique em **Create Key**.
+
+![](./Images/oci_vault_create2.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 2. Na OCI, no menu de hambúrguer 🍔, acesse: **Developer Services** → **DevOps** → **Projects**.
   
  ![](./Images/014-LAB4.png)
 
-3. No compartment criado anteriormente, clique em **Create DevOps Project**.
+2. No compartment criado anteriormente, clique em **Create DevOps Project**.
   
 ![](./Images/create_project.png)
 
-4. Na página do projeto, clique em **Code Repositories**.
+3. Na página do projeto, clique em **Code Repositories**.
 
 ![](./Images/code_repositories.png)
 
-5. Clique em **Mirror repository**.
+4. Clique em **Mirror repository**.
 
 ![](./Images/mirror_repo1.png)
 
-6. Preencha o formulário da seguinte forma:
+5. Em 'Connection', clique em **Create a Connection**.
 
-  - **Name:** ftRepo
-  - **Description:** (Defina uma descrição qualquer).
-  - **Default branch:** main
+![](./Images/mirror_repo2.png)
 
 ![](./Images/017-LAB4.png)
 
-7. Na página do repositório recém-criado, clique em **HTTPS** e:
+6. Na página do repositório recém-criado, clique em **HTTPS** e:
 
 - [1] Copie para o bloco de notas a informação do usuário a ser utilizado para trabalhar com o git (**Usuário Git**).
 - [2] Copie o comando git clone e o execute no Cloud Shell.
 
- ![](./Images/018-LAB4.png)
+![](./Images/018-LAB4.png)
 
- 8. No Cloud Shell, ao executar o comando, informe o **Usuario Git** recém-copiado, e o seu **Auth Token** como senha.
+7. No Cloud Shell, ao executar o comando, informe o **Usuario Git** recém-copiado, e o seu **Auth Token** como senha.
 
- 9. Neste momento, o Cloud Shell deve possuir dois novos diretórios:
+8. Neste momento, o Cloud Shell deve possuir dois novos diretórios:
  - BackendFTDev
  - ftRepo
  
- ![](./Images/019-LAB4.png)
+![](./Images/019-LAB4.png)
 
- 10. Execute os seguintes comandos para copiar o conteúdo do repositório **BackendFTDev**, para o repositório **ftRepo**.
+9. Execute os seguintes comandos para copiar o conteúdo do repositório **BackendFTDev**, para o repositório **ftRepo**.
 
- ```shell
+```shell
  git config --global user.email "<seu-email>"
  git config --global user.name "<seu-username>"
  cp -r BackendFTDev/* ftRepo/
@@ -130,14 +198,17 @@ Código da Região:
  git add -A
  git commit -m "Início do projeto"
  git push origin main
- ```
+```
 
 *Ao final do último comando o **Usuário git** e a senha (**Auth Token**) poderão ser solicitados novamente*.
 
- ## <a name="Passo2"></a> Passo 2: Criar e configurar processo de Build (CI)
+- - -
 
- 1. Retorne à página inicial do projeto DevOps.
- 2. Clique em **Create build pipeline**. 
+## <a name="Passo2"></a> Passo 2: Criar e configurar processo de Build (CI)
+
+1. Retorne à página inicial do projeto DevOps.
+
+2. Clique em **Create build pipeline**. 
 
  ![](./Images/020-LAB4.png)
 
@@ -197,19 +268,21 @@ Código da Região:
 - 🧾 [Documentação de como formatar o documento de build](https://docs.oracle.com/pt-br/iaas/Content/devops/using/build_specs.htm)
 - 📑 [Documento utilizado neste workshop (build_spec.yaml)](https://raw.githubusercontent.com/CeInnovationTeam/BackendFTDev/main/build_spec.yaml)
 
- ## <a name="Passo3"></a> Passo 3: Criar e configurar entrega de artefatos (CI)
+- - -
 
- 1. Na aba de Build Pipeline, clique no sinal de **"+"**, abaixo do stage **Criacao de artefatos**, e em **Add Stage**.
+## <a name="Passo3"></a> Passo 3: Criar e configurar entrega de artefatos (CI)
+
+1. Na aba de Build Pipeline, clique no sinal de **"+"**, abaixo do stage **Criacao de artefatos**, e em **Add Stage**.
      
 ![](./Images/027-LAB4.png)
 
 
- 2. Selecione a opção **Deliver Artifacts** e clique em **Next**.
+2. Selecione a opção **Deliver Artifacts** e clique em **Next**.
      
 ![](./Images/028-LAB4.png)
 
 
- 3. Preencha o formulário como abaixo e clique em **Create artifact**.
+3. Preencha o formulário como abaixo e clique em **Create artifact**.
  - **Stage name**: Entrega de artefato
  - **Description**: (Defina uma descrição qualquer).
 
@@ -261,6 +334,8 @@ Código da Região:
 
 <a name="FinalPasso3"></a> Isso conclui a parte de Build (CI) do projeto! Até aqui automatizamos a compilação do código java, criamos a imagem de contêiner, e armazenamos ambas nos repositórios de artefatos, e de imagens de contêiner respectivamente. Vamos agora para a parte de Deployment (CD)!
 
+- - -
+
 ## <a name="Passo4"></a> Passo 4: Criar e configurar entrega de aplicação a cluster Kubernetes (CD)
 
 1. No **Cloud Shell**, para a criação do secret, execute os comandos abaixo e informe o seu User OCID e Auth Token, coletados anteriormente.
@@ -275,27 +350,28 @@ Código da Região:
         
 ![](./Images/039-LAB4.png)
 
- 3. Retorne ao seu projeto DevOps clicando no 🍔 menu hamburguer e acessando: **Developer Services**  → **Projects**.
- 4. No canto esquerdo, selecione **Environments**.
+3. Retorne ao seu projeto DevOps clicando no 🍔 menu hamburguer e acessando: **Developer Services**  → **Projects**.
+
+4. No canto esquerdo, selecione **Environments**.
          
 ![](./Images/040-LAB4.png)
 
- 5. Clique em **Create New Environment**.
+5. Clique em **Create New Environment**.
 
- 6. Preencha o formulário como abaixo e clique em **Next**.
+6. Preencha o formulário como abaixo e clique em **Next**.
   - **Environment type**: Oracle Kubernetes Engine
   - **Name**: OKE
   - **Description**: OKE
 
- 7. Selecione o Cluster de Kubernetes, e clique em **Create Envrinoment**.
+7. Selecione o Cluster de Kubernetes, e clique em **Create Envrinoment**.
 
  ![](./Images/041-LAB4.png)
 
- 8. No canto esquerdo selecione **Artifacts** em seguida em **Add Artifact**.
+8. No canto esquerdo selecione **Artifacts** em seguida em **Add Artifact**.
           
 ![](./Images/042-LAB4.png)
 
- 9. Preencha o formulario como abaixo e clique em **Add**.
+9. Preencha o formulario como abaixo e clique em **Add**.
  - **Name**: deployment.yaml
  - **Type**: Kubernetes manifest
  - **Artifact Source**: Inline
@@ -305,31 +381,31 @@ Código da Região:
           
 ![](./Images/043_0-LAB4.png)
 
- 10. No canto esquerdo, selecione **Deployment Pipelines** e, em seguida, clique em **Create Pipeline**.
+10. No canto esquerdo, selecione **Deployment Pipelines** e, em seguida, clique em **Create Pipeline**.
           
 ![](./Images/044-LAB4.png)
 
- 11. Preencha o formulário como abaixo e clique em **Create pipeline**.
+11. Preencha o formulário como abaixo e clique em **Create pipeline**.
  - **Pipeline name**: deploy
  - **Description**: (Defina uma descrição qualquer).
           
 ![](./Images/048-LAB4.png)
 
- 12. Na Aba de **Parameters** configure o seguinte parâmetro:
+12. Na Aba de **Parameters** configure o seguinte parâmetro:
  
- - REGISTRY_REGION: `<código-de-região>`.ocir.io  
+- REGISTRY_REGION: `<código-de-região>`.ocir.io  
           
 ![](./Images/049-LAB4.png)
 
- 13. Retorne à aba de **Pipeline** e clique em **Add Stage**.
+13. Retorne à aba de **Pipeline** e clique em **Add Stage**.
           
 ![](./Images/050-LAB4.png)
 
- 14. Selecione a Opção **Apply Manifest to your Kubernetes Cluster** e clique em **Next**.
+14. Selecione a Opção **Apply Manifest to your Kubernetes Cluster** e clique em **Next**.
           
 ![](./Images/051-LAB4.png)
 
- 15. Preencha o formulário da seguinte forma:
+15. Preencha o formulário da seguinte forma:
  - **Name**: Deployment da Aplicacao
  - **Description**: (Defina uma Descrição qualquer).
  - **Environment**: OKE
@@ -342,11 +418,13 @@ Código da Região:
 
 17. Feito isto, clique em **Add**.
  
- Com isso finalizamos a parte de Deployment (CD) do nosso projeto! No passo a seguir vamos conectar ambos os pipelines, e definir um gatilho (trigger) para que o processo automatizado se inicie!
+Com isso finalizamos a parte de Deployment (CD) do nosso projeto! No passo a seguir vamos conectar ambos os pipelines, e definir um gatilho (trigger) para que o processo automatizado se inicie!
 
- ## <a name="Passo5"></a> Passo 5: Configurar gatilho do fluxo e conectar pipelines de CI/CD
+- - -
 
-  1. Retorne ao projeto clicando no 🍔 menu hambúrguer e acessando: **Developer Services**  → **Projects**.
+## <a name="Passo5"></a> Passo 5: Configurar gatilho do fluxo e conectar pipelines de CI/CD
+
+1. Retorne ao projeto clicando no 🍔 menu hambúrguer e acessando: **Developer Services**  → **Projects**.
   2. No canto esquerdo selecione **Triggers**, e em seguida clique em **Create Trigger**.
 
   ![](./Images/053-LAB4.png)
@@ -417,24 +495,6 @@ svc-java-app   LoadBalancer   10.96.16.229    <EXTERNAL-IP>   8081:32344/TCP   1
 
   8. No **Cloud Shell**, execute o comando abaixo substituindo a informação de `<EXTERNAL-IP>` pelo IP copiado.
 
-   ```shell
-  curl --location --request POST '<EXTERNAL-IP>:8081/processcart' \
---header 'Content-Type: application/json' \
---data '[
-      {   "nome":"Oranges",
-      "preco":1.99
-      },
-      {   "nome":"Apples",
-          "preco":2.97
-      },
-      {   "nome":"Bananas",
-          "preco":2.99
-      },
-      {   "nome":"Watermelon",
-          "preco":3.99
-      }
-]'
-```
 - Você deverá visualizar como resposta a soma dos preços dos produtos! Experimente modificar os valores para checar a soma!
 
 ![](./Images/059-LAB4.png)
