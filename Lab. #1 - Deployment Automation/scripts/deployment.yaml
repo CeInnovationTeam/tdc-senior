@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mushop-demo
-        image: iad.ocir.io/id3kyspkytmr/mushop-demo:${BUILDRUN_HASH}
+        image: <codigo-da-região>.ocir.io/<tenancy-namespace>/mushop-demo:${BUILDRUN_HASH}
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
