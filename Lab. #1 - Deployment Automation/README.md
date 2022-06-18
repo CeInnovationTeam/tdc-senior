@@ -19,8 +19,11 @@ Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
   - [Passo 1.5: Repo Github espelhado](#Passo1.5)
 - [Passo 2: Criar pipeline de build e configurar criação da container image (CI)](#Passo2)
 - [Passo 3: Configurar entrega da container image (CI)](#Passo3)
-- [Passo 4: Passo 4: Criar pipeline de deploy e configurar entrega da aplicação ao cluster Kubernetes (CD)](#Passo4)
-- [Passo 5: Configurar trigger de início do fluxo e conectar pipelines de CI/CD](#Passo5)
+- [Passo 4: Criar pipeline de deploy e configurar entrega da aplicação ao cluster Kubernetes (CD)](#Passo4)
+  - [Passo 4.1: Criação do kubernetes secret](#Passo4.1)
+  - [Passo 4.2: Adição de environment no OCI DevOps](#Passo4.2)
+  - [Passo 4.3: Criação de artefato de deployment](#Passo4.3)
+- [Passo 5: Criação do trigger de início e do trigger de conexão dos pipelines de CI e de CD](#Passo5)
 - [Passo 6: Validar implementação](#Passo6)
 
  - - -
@@ -348,16 +351,31 @@ Vamos agora adicionar o cluster kubernetes como ambiente alvo no projeto OCI Dev
 
 5. Selecione o cluster kubernetes, e clique em **Create Envrinoment**.
 
- ![](./Images/041-LAB4.png)
+![](./Images/041-LAB4.png)
 
-### <a name="Passo4.3"></a> Passo 4.3: Criação do deployment.yaml
-Vamos agora adicionar o cluster kubernetes como ambiente alvo no projeto OCI DevOps.
+### <a name="Passo4.3"></a> Passo 4.3: Criação de artefato de deployment
 
-1. No canto esquerdo selecione **Artifacts** em seguida em **Add Artifact**.
+Nesse momento, vamos adicionar o arquivo deployment.yaml no artifact registry, para utilizá-lo no pipeline de deployment.
+
+Para aprofundar seu conhecimento neste serviço, acesse o link abaixo! 👇
+
+- 🧾 [Documentação do OCI Artifact Registry](https://docs.oracle.com/en-us/iaas/Content/artifacts/home.htm)
+
+1. Copie o [deployment.yaml](./scripts/deployment.yaml) para um novo bloco de notas e salve o arquivo.
+
+2. Na OCI, no menu de hambúrguer 🍔, acesse: **Developer Services** → **Containers & Artifacts** → **Artifact Registry**.
+
+![](./Images/artifact_registry1.png)
+
+3. Clique em **Create Repository**.
+
+![](./Images/artifact_registry2.png)
+
+6. No canto esquerdo selecione **Artifacts** em seguida em **Add Artifact**.
           
 ![](./Images/042-LAB4.png)
 
-2. Preencha o formulario como abaixo e clique em **Add**.
+7. Preencha o formulario como abaixo e clique em **Add**.
  - **Name**: deployment.yaml
  - **Type**: Kubernetes manifest
  - **Artifact Source**: Inline
@@ -367,11 +385,11 @@ Vamos agora adicionar o cluster kubernetes como ambiente alvo no projeto OCI Dev
           
 ![](./Images/043_0-LAB4.png)
 
-3. No canto esquerdo, selecione **Deployment Pipelines** e, em seguida, clique em **Create Pipeline**.
+8. No canto esquerdo, selecione **Deployment Pipelines** e, em seguida, clique em **Create Pipeline**.
           
 ![](./Images/044-LAB4.png)
 
-4. Preencha o formulário como abaixo e clique em **Create pipeline**.
+9. Preencha o formulário como abaixo e clique em **Create pipeline**.
  - **Pipeline name**: deploy
  - **Description**: (Defina uma descrição qualquer).
           
@@ -379,32 +397,32 @@ Vamos agora adicionar o cluster kubernetes como ambiente alvo no projeto OCI Dev
           
 ![](./Images/049-LAB4.png)
 
-5. Retorne à aba de **Pipeline** e clique em **Add Stage**.
+10. Retorne à aba de **Pipeline** e clique em **Add Stage**.
           
 ![](./Images/050-LAB4.png)
 
-6. Selecione a Opção **Apply Manifest to your Kubernetes Cluster** e clique em **Next**.
+11. Selecione a Opção **Apply Manifest to your Kubernetes Cluster** e clique em **Next**.
           
 ![](./Images/051-LAB4.png)
 
-7. Preencha o formulário da seguinte forma:
+12. Preencha o formulário da seguinte forma:
  - **Name**: Deployment da Aplicacao
  - **Description**: (Defina uma Descrição qualquer).
  - **Environment**: OKE
 
 ![](./Images/052_0-LAB4.png)
 
-8. Clique em **Select Artifact**, e selecione **deployment.yaml**.
+13. Clique em **Select Artifact**, e selecione **deployment.yaml**.
 
 ![](./Images/052_1-LAB4.png)
 
-9. Feito isto, clique em **Add**.
+14. Feito isto, clique em **Add**.
  
 Com isso finalizamos a parte de Deployment (CD) do nosso projeto! No passo a seguir vamos conectar ambos os pipelines, e definir um gatilho (trigger) para que o processo automatizado se inicie!
 
 - - -
 
-## <a name="Passo5"></a> Passo 5: Configurar gatilho do fluxo e conectar pipelines de CI/CD
+## <a name="Passo5"></a> Passo 5: Criação do trigger de início e do trigger de conexão dos pipelines de CI e de CD
 
 1. Retorne ao projeto clicando no 🍔 menu hambúrguer e acessando: **Developer Services**  → **Projects**.
   2. No canto esquerdo selecione **Triggers**, e em seguida clique em **Create Trigger**.

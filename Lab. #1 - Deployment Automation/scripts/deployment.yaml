@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mushop-demo
+  labels:
+    app: mushop-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mushop-demo
+  template:
+    metadata:
+      labels:
+        app: mushop-demo
+    spec:
+      containers:
+      - name: mushop-demo
+        image: iad.ocir.io/id3kyspkytmr/mushop-demo:${BUILDRUN_HASH}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: ocisecret
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-mushop-demo
+  annotations:
+    service.beta.kubernetes.io/oci-load-balancer-shape: 10Mbps
+spec:
+  selector:
+    app: mushop-demo
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: LoadBalancer
