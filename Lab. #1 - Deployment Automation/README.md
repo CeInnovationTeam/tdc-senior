@@ -1,5 +1,7 @@
 # Lab. #1 - Deployment Automation
 
+⏱ Tempo de execução: ~65min.
+
 Neste lab, você construirá uma esteira de desenvolvimento com o serviço **OCI DevOps**, que irá automatizar a entrega da aplicação MuShop, de forma conteinerizada, a um cluster Kubernetes na OCI!
 
 Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
@@ -15,9 +17,9 @@ Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
   - [Passo 1.3: Notifications Topic](#Passo1.3)
   - [Passo 1.4: Criação de External Connection](#Passo1.4)
   - [Passo 1.5: Repo Github espelhado](#Passo1.5)
-- [Passo 2: Criar e configurar processo de Build (CI)](#Passo2)
-- [Passo 3: Criar e configurar entrega de artefatos (CI)](#Passo3)
-- [Passo 4: Criar e configurar entrega de aplicação a cluster kubernetes (CD)](#Passo4)
+- [Passo 2: Criar pipeline de build e configurar criação da container image (CI)](#Passo2)
+- [Passo 3: Configurar entrega da container image (CI)](#Passo3)
+- [Passo 4: Passo 4: Criar pipeline de deploy e configurar entrega da aplicação ao cluster Kubernetes (CD)](#Passo4)
 - [Passo 5: Configurar trigger de início do fluxo e conectar pipelines de CI/CD](#Passo5)
 - [Passo 6: Validar implementação](#Passo6)
 
@@ -215,61 +217,55 @@ Com isso, concluímos o espelhamento do repo no GitHub para o projeto OCI DevOps
 
 - - -
 
-## <a name="Passo2"></a> Passo 2: Criar e configurar processo de Build (CI)
+## <a name="Passo2"></a> Passo 2: Criar pipeline de build e configurar criação da container image (CI)
 
-1. Retorne à página inicial do projeto DevOps.
+1. Retorne à página inicial do projeto OCI DevOps.
 
 2. Clique em **Create build pipeline**. 
 
- ![](./Images/020-LAB4.png)
+ ![](./Images/build_pipe1.png)
 
- 3. Preencha o formulário da seguinte forma, e clique em **Create**:
+3. Preencha o formulário da seguinte forma, e clique em **Create**:
    - **Name**: build
    - **Description**: (Defina uma descrição qualquer).
 
- ![](./Images/021-LAB4.png)
+![](./Images/021-LAB4.png)
 
- 4. Abra o pipeline de build recém-criado.
- 5. Na aba parâmetros, defina os seguintes parametros:
-  - APM_ENDPOINT: *Informação coletada nos pré requisitos*.
-  - APM_PVDATAKEY: *Informação coletada nos pré requisitos*.
-  - APM_AGENT_URL: *Informação coletada nos pré requisitos*.
+4. Acesse a aba de **Build Pipeline**, e clique em **Add Stage**.
 
-  **ATENÇÃO** - Ao inserir nome, valor e descrição, clique no sinal de "+" para que a informação fique salva.
-  
- ![](./Images/022-LAB4.png)
+![](./Images/023-LAB4.png)
 
- 6. Acesse a aba de **Build Pipeline**, e clique em **Add Stage**.
+5. Selecione a opção **Managed Build** e clique **Next**.
 
- ![](./Images/023-LAB4.png)
+![](./Images/024-LAB4.png)
 
- 7. Selecione a opção **Managed Build** e clique **Next**.
+6. Preencha o formulário da seguinte forma:
 
- ![](./Images/024-LAB4.png)
-
- 8. Preencha o formulário da seguinte forma:
-
-- **Stage Name**: Criacao de artefatos
+- **Stage Name**: Criacao de container image
 - **Description**: (Defina uma descrição qualquer).
 - **OCI build agent compute shape**: *Não alterar*.
 - **Base container image**: *Não alterar*.
 - **Build spec file path**: *Não alterar*.
       
-![](./Images/025-LAB4.png)
+![](./Images/build_pipe3.png)
 
+7. Em Primary code repository, clique em **Select**.
 
-9. Em Primary code repository, clique em **Select**, selecione as opções abaixo e clique em **Save**. 
+![](./Images/primary_code1.png)
 
-- **Source Connection type**: OCI Code Repository
-- **Repositório**: ftRepo
-- **Select Branch**: *Não alterar*
-- **Build source name**: java_root
-    
-![](./Images/026-LAB4.png)
+8. Selecione as opções abaixo e clique em **Save**.
 
-- Feito isto, clique em **Add**.
+- **Source Connection type**: GitHub
+- **Name**: *Selecione a conexão criada*.
+- **Select Repository**: *Selecione o repo do github*.
+- **Branch**: main.
+- **Build source name**: storefront
 
-![](./Images/025_1-LAB4.png)
+![](./Images/primary_code2.png)
+
+9. Feito isto, clique em **Add**.
+
+![](./Images/primary_code3.png)
 
 🤔 Neste momento é importante entender a forma como a ferramenta trabalha 📝.
     
@@ -281,108 +277,87 @@ Com isso, concluímos o espelhamento do repo no GitHub para o projeto OCI DevOps
 
 - - -
 
-## <a name="Passo3"></a> Passo 3: Criar e configurar entrega de artefatos (CI)
+## <a name="Passo3"></a> Passo 3: Configurar entrega da container image (CI)
 
-1. Na aba de Build Pipeline, clique no sinal de **"+"**, abaixo do stage **Criacao de artefatos**, e em **Add Stage**.
+1. Na aba de Build Pipeline, clique no sinal de **"+"**, abaixo do stage **Criacao de container image**, e em **Add Stage**.
      
-![](./Images/027-LAB4.png)
+![](./Images/deliver_image1.png)
 
 
 2. Selecione a opção **Deliver Artifacts** e clique em **Next**.
      
 ![](./Images/028-LAB4.png)
 
-
-3. Preencha o formulário como abaixo e clique em **Create artifact**.
- - **Stage name**: Entrega de artefato
+3. Preencha o formulário como abaixo e clique em **Create Artifact**.
+ - **Stage name**: Entrega de Container Image
  - **Description**: (Defina uma descrição qualquer).
 
-![](./Images/029_0-LAB4.png)
-
- 4. Na opção de seleção de artefatos, preencha como abaixo e clique em **Add**.
-- **Name**: backend_jar
- - **Type**: General artifact
- - **Artifact registry**: *Selecione o Artifact registry gerado pelo terraform de nome "artifact_repository"*.
-- **Artifact location**: Set a Custom artifact location and version
-- **Artifact path**: backend.jar
-- **Version**: ${BUILDRUN_HASH}
-- **Replace parameters used in this artifact**: Yes, substitute placeholders
-       
-![](./Images/030-LAB4.png)
-
-
-5. Preencha o campo restante da tabela **Build config/result artifact name** com "app" e clique em **Add**.
-    
-![](./Images/029_1-LAB4.png)
-
- 6. Na aba de Build Pipeline, clique no sinal de **"+"** abaixo do stage **Entrega de artefato** e em **Add Stage**.
-
- ![](./Images/031-LAB4.png)
-
- 7. Novamente, clique em **Deliver Artifacts** e em **Next**.
-
- ![](./Images/028-LAB4.png)
-
- 8. Preencha o formulário como abaixo e clique em **Create Artifact**.
- - **Stage name**: Entrega de Image de Container
- - **Description**: (Defina uma descrição qualquer).
-
- ![](./Images/033_0-LAB4.png)
+![](./Images/deliver_image2.png)
  
- 9. Em *Add artifact*, preencha o formulário como abaixo e clique em **Add**.
-- **Name**: backend_img
+4. Preencha o formulário como abaixo e clique em **Add**.
+- **Name**: mushop-demo
 - **Type**: Container image repository
-- **Artifact Source**: `<código-de-região>.ocir.io/${IMG_PATH}`
+- **Artifact Source**: `<código-de-região>.ocir.io/<tenancy-namespace>/mushop-demo:${BUILDRUN_HASH}`
 - **Replace parameters used in this artifact**: Yes, substitute placeholders
-   
-*Para Ashburn e São Paulo, os códigos de região são respectivamente "iad" e "gru". Caso esteja em outra região, utilize a [tabela de refêrencia](https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm)*.
        
-![](./Images/032_0-LAB4.png)
+![](./Images/deliver_image3.png)
 
-9. Preencha o campo restante da tabela **Build config/result artifact name** com: docker-img e clique em **Add**.
+5. Finalmente, preencha como abaixo e clique em **Add**.
+
+ - **Build config/result artifact name**: mushop-demo
        
-![](./Images/033_1-LAB4.png)
+![](./Images/deliver_image4.png)
 
-<a name="FinalPasso3"></a> Isso conclui a parte de Build (CI) do projeto! Até aqui automatizamos a compilação do código java, criamos a imagem de contêiner, e armazenamos ambas nos repositórios de artefatos, e de imagens de contêiner respectivamente. Vamos agora para a parte de Deployment (CD)!
+![](./Images/build_part2.png)
+
+<a name="FinalPasso3"></a> Isso conclui a parte de Build (CI) do projeto! Até aqui automatizamos a compilação do código, configuramos a criação da container image e também o seu armazenamento no container registry! Vamos agora para a parte de Deployment (CD)!
 
 - - -
 
-## <a name="Passo4"></a> Passo 4: Criar e configurar entrega de aplicação a cluster Kubernetes (CD)
+## <a name="Passo4"></a> Passo 4: Criar pipeline de deploy e configurar entrega da aplicação ao cluster Kubernetes (CD)
 
-1. No **Cloud Shell**, para a criação do secret, execute os comandos abaixo e informe o seu User OCID e Auth Token, coletados anteriormente.
+### <a name="Passo4.1"></a> Passo 4.1: Criação do kubernetes secret
+
+Nesse momento, iremos inicialmente criar o [kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/), para permitir que o cluster colete a container image durante o deployment. Iremos criar o secret no namespace 'mushop'.
+
+1. Copie o comando abaixo para o seu bloco de notas e o edite substituindo os campos destacados por '<>'.
 
  ```shell
-  cd ftRepo/scripts/
-  chmod +x create-secret.sh 
-  ./create-secret.sh  
+kubectl create secret docker-registry ocisecret --docker-server=iad.ocir.io --docker-username='<tenancy-namespace>/oracleidentitycloudservice/<e-mail>' --docker-password='<auth-token>' --docker-email='<e-mail>' -n mushop
  ```
 
-2. Aguarde o final do fluxo.
-        
-![](./Images/039-LAB4.png)
+2. Então, no **Cloud Shell**, execute o comando anterior.
 
-3. Retorne ao seu projeto DevOps clicando no 🍔 menu hamburguer e acessando: **Developer Services**  → **Projects**.
+![](./Images/secret_created.png)
 
-4. No canto esquerdo, selecione **Environments**.
+### <a name="Passo4.2"></a> Passo 4.2: Adição de Environment no OCI DevOps
+Vamos agora adicionar o cluster kubernetes como ambiente alvo no projeto OCI DevOps.
+
+1. Retorne ao seu projeto DevOps clicando no menu hambúrguer 🍔 e acessando: **Developer Services**  → **Projects**.
+
+1. No canto esquerdo, selecione **Environments**.
          
 ![](./Images/040-LAB4.png)
 
-5. Clique em **Create New Environment**.
+3. Clique em **Create New Environment**.
 
-6. Preencha o formulário como abaixo e clique em **Next**.
+4. Preencha o formulário como abaixo e clique em **Next**.
   - **Environment type**: Oracle Kubernetes Engine
   - **Name**: OKE
   - **Description**: OKE
 
-7. Selecione o Cluster de Kubernetes, e clique em **Create Envrinoment**.
+5. Selecione o cluster kubernetes, e clique em **Create Envrinoment**.
 
  ![](./Images/041-LAB4.png)
 
-8. No canto esquerdo selecione **Artifacts** em seguida em **Add Artifact**.
+### <a name="Passo4.3"></a> Passo 4.3: Criação do deployment.yaml
+Vamos agora adicionar o cluster kubernetes como ambiente alvo no projeto OCI DevOps.
+
+1. No canto esquerdo selecione **Artifacts** em seguida em **Add Artifact**.
           
 ![](./Images/042-LAB4.png)
 
-9. Preencha o formulario como abaixo e clique em **Add**.
+2. Preencha o formulario como abaixo e clique em **Add**.
  - **Name**: deployment.yaml
  - **Type**: Kubernetes manifest
  - **Artifact Source**: Inline
@@ -392,42 +367,38 @@ Com isso, concluímos o espelhamento do repo no GitHub para o projeto OCI DevOps
           
 ![](./Images/043_0-LAB4.png)
 
-10. No canto esquerdo, selecione **Deployment Pipelines** e, em seguida, clique em **Create Pipeline**.
+3. No canto esquerdo, selecione **Deployment Pipelines** e, em seguida, clique em **Create Pipeline**.
           
 ![](./Images/044-LAB4.png)
 
-11. Preencha o formulário como abaixo e clique em **Create pipeline**.
+4. Preencha o formulário como abaixo e clique em **Create pipeline**.
  - **Pipeline name**: deploy
  - **Description**: (Defina uma descrição qualquer).
           
-![](./Images/048-LAB4.png)
-
-12. Na Aba de **Parameters** configure o seguinte parâmetro:
- 
-- REGISTRY_REGION: `<código-de-região>`.ocir.io  
+![](./Images/048-LAB4.png) 
           
 ![](./Images/049-LAB4.png)
 
-13. Retorne à aba de **Pipeline** e clique em **Add Stage**.
+5. Retorne à aba de **Pipeline** e clique em **Add Stage**.
           
 ![](./Images/050-LAB4.png)
 
-14. Selecione a Opção **Apply Manifest to your Kubernetes Cluster** e clique em **Next**.
+6. Selecione a Opção **Apply Manifest to your Kubernetes Cluster** e clique em **Next**.
           
 ![](./Images/051-LAB4.png)
 
-15. Preencha o formulário da seguinte forma:
+7. Preencha o formulário da seguinte forma:
  - **Name**: Deployment da Aplicacao
  - **Description**: (Defina uma Descrição qualquer).
  - **Environment**: OKE
 
 ![](./Images/052_0-LAB4.png)
 
-16. Clique em **Select Artifact**, e selecione **deployment.yaml**.
+8. Clique em **Select Artifact**, e selecione **deployment.yaml**.
 
 ![](./Images/052_1-LAB4.png)
 
-17. Feito isto, clique em **Add**.
+9. Feito isto, clique em **Add**.
  
 Com isso finalizamos a parte de Deployment (CD) do nosso projeto! No passo a seguir vamos conectar ambos os pipelines, e definir um gatilho (trigger) para que o processo automatizado se inicie!
 
@@ -506,8 +477,4 @@ svc-java-app   LoadBalancer   10.96.16.229    <EXTERNAL-IP>   8081:32344/TCP   1
 
 8. No **Cloud Shell**, execute o comando abaixo substituindo a informação de `<EXTERNAL-IP>` pelo IP copiado.
 
-- Você deverá visualizar como resposta a soma dos preços dos produtos! Experimente modificar os valores para checar a soma!
-
-![](./Images/059-LAB4.png)
-
-### 👏🏻 Parabéns!!! Você foi capaz de construir com sucesso um pipeline completo de **DevOps** na OCI! 🚀
+### 👏🏻 Parabéns!!! Você foi capaz de construir com sucesso um pipeline completo de **DevOps** na OCI para a aplicação MuShop! 🚀
