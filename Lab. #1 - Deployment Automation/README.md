@@ -8,19 +8,24 @@ Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
 - 🧾 [Documentação do OCI DevOps](https://docs.oracle.com/en-us/iaas/Content/devops/using/home.htm)
 
 **Confira todo o passo-a-passo dessa implementação:**
- - [Pre Reqs: Coletar dados necessários](#PreReqs)
- - [Passo 1: Espelhar um repo no github para o projeto OCI DevOps](#Passo1)
- - [Passo 2: Criar e configurar processo de Build (CI)](#Passo2)
- - [Passo 3: Criar e configurar entrega de artefatos (CI)](#Passo3)
- - [Passo 4: Criar e configurar entrega de aplicação a cluster kubernetes (CD)](#Passo4)
- - [Passo 5: Configurar trigger de início do fluxo e conectar pipelines de CI/CD](#Passo5)
- - [Passo 6: Validar implementação](#Passo6)
+- [Pre Reqs: Coletar dados necessários](#PreReqs)
+- [Passo 1: Espelhar um repo no github para o projeto OCI DevOps](#Passo1)
+  - [Passo 1.1: GitHub repo e Personal Access Token](#Passo1.1)
+  - [Passo 1.2: Vault Secret](#Passo1.2)
+  - [Passo 1.3: Notifications Topic](#Passo1.3)
+  - [Passo 1.4: Criação de External Connection](#Passo1.4)
+  - [Passo 1.5: Repo Github espelhado](#Passo1.5)
+- [Passo 2: Criar e configurar processo de Build (CI)](#Passo2)
+- [Passo 3: Criar e configurar entrega de artefatos (CI)](#Passo3)
+- [Passo 4: Criar e configurar entrega de aplicação a cluster kubernetes (CD)](#Passo4)
+- [Passo 5: Configurar trigger de início do fluxo e conectar pipelines de CI/CD](#Passo5)
+- [Passo 6: Validar implementação](#Passo6)
 
  - - -
 
  ## <a name="PreReqs"></a> Pre Reqs: Coletar dados necessários
  
-Vamos coletar alguns dados na tenancy da OCI que serão utilizados ao logo do laboratório, recomendamos que as anote em um bloco de notas para ter sempre em mãos de modo fácil. Serão coletadas as seguintes informações:
+Vamos coletar alguns dados na tenancy da OCI que serão utilizados ao longo do laboratório. Recomendamos que os anote em um bloco de notas para ter sempre em mãos, de modo fácil. Serão coletados os seguintes dados:
 
 ```bash
 Tenancy Namespace:
@@ -42,15 +47,15 @@ Código da Região:
 
 ### Username e Auth Token
 
-1. No menu do lado direto no icone do usuário, clique no nome do seu usuário.
+1. No menu do lado direito, clique no ícone do usuário, e então no nome do seu usuário.
 
 ![](./Images/user1.png)
 
-2. Copie o dado destacado em vermelho e insira no seu bloco de notas. Este será o seu 'username'.
+2. Copie o dado destacado em vermelho e o insira no seu bloco de notas. Este será o seu 'username'.
 
 ![](./Images/username.png)
 
-3. Depois, desça a página até visualizar 'Resources', clique em **Auth Tokens** e em **Generate Token**, para gerar um novo token.
+3. Depois, desça a página até visualizar 'Resources', então clique em **Auth Tokens** e em **Generate Token**, para gerar um novo token.
 
 ![](./Images/user2.png)
 
@@ -77,7 +82,7 @@ Código da Região:
 
 ## <a name="Passo1"></a> Passo 1: Espelhar um repo no github para o projeto OCI DevOps
 
-### GitHub repo e Personal Access Token
+### <a name="Passo1.1"></a> Passo 1.1: GitHub repo e Personal Access Token
 
 1. Crie um repo no github.
 
@@ -107,8 +112,8 @@ Código da Região:
 
 ![](./Images/github_PAT6.png)
 
-### Espelhamento de repo no OCI DevOps
-Nesse momento, vamos provisionar um **OCI Vault** para armazenar o token gerado. O **OCI Vault** é um serviço da OCI que permite o gerenciamento de forma segura de credencias e outros dados sensíveis com chaves de criptografia.
+### <a name="Passo1.2"></a> Passo 1.2: Vault Secret
+Nesse momento, vamos provisionar um **OCI Vault** para armazenar o token gerado no GitHub como um vault secret. O **OCI Vault** é um serviço da OCI que permite o gerenciamento seguro de credenciais e de outros dados sensíveis com chaves de criptografia.
 
 Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
 
@@ -135,31 +140,64 @@ Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
 
 ![](./Images/oci_vault_create2.png)
 
+6. Feito isto, clique em **Secrets** e em **Create Secret**.
 
+![](./Images/oci_vault_create3.png)
 
+7. Atribua um nome ao secret, selecione a Master Encryption Key criada anteriormente, insira o Personal Access Token em 'Secrets Contents' e clique em **Create Secret**.
 
+![](./Images/oci_vault_create4.png)
 
+### <a name="Passo1.3"></a> Passo 1.3: Notifications Topic
+Nessa etapa, vamos criar um tópico para que o projeto do OCI DevOps possa enviar notificações de eventos de execução dos pipelines. Para isso, utilizaremos o serviço OCI Notifications!
 
+Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
 
+- ❗ [Página oficial do OCI Notifications](https://www.oracle.com/devops/notifications/)
+- 🧾 [Documentação do OCI Notifications](https://docs.oracle.com/en-us/iaas/Content/Notification/home.htm)
 
+1. Na OCI, no menu de hambúrguer 🍔, acesse: **Developer Services** → **Application Integration** → **Notifications**.
 
+![](./Images/notifications_create1.png)
 
+2. Então, clique em **Create Topic**.
 
+![](./Images/notifications_create2.png)
 
+3. Atribua um nome ao tópico e clique em **Create**.
 
+![](./Images/notifications_create3.png)
 
+### <a name="Passo1.4"></a> Passo 1.4: Criação de External Connection
+Nessa etapa, vamos configurar propriamente a conexão de um projeto do OCI DevOps ao repositório no GitHub.
 
-
-
-2. Na OCI, no menu de hambúrguer 🍔, acesse: **Developer Services** → **DevOps** → **Projects**.
+1. Na OCI, no menu de hambúrguer 🍔, acesse: **Developer Services** → **DevOps** → **Projects**.
   
- ![](./Images/014-LAB4.png)
+![](./Images/014-LAB4.png)
 
-2. No compartment criado anteriormente, clique em **Create DevOps Project**.
-  
+2. No compartment correspondente, clique em **Create DevOps Project**.
+
 ![](./Images/create_project.png)
 
-3. Na página do projeto, clique em **Code Repositories**.
+3. Atribua um nome ao projeto, selecione o Notification Topic criado anteriormente e clique em **Create DevOps Project**.
+
+![](./Images/devops_create1.png)
+
+4. Clique no projeto DevOps criado e, na página do projeto, clique em **External Connections**.
+
+![](./Images/external_connection1.png)
+
+5. Clique em **Create external connection**.
+
+![](./Images/external_connection2.png)
+
+6. Atribua um nome à conexão, selecione o Vault e o Secret criados anteriormente, e clique em **Create**.
+
+![](./Images/external_connection3.png)
+
+### <a name="Passo1.5"></a> Passo 1.5: Repo Github espelhado
+
+1. Na página do projeto, clique em **Code Repositories**.
 
 ![](./Images/code_repositories.png)
 
@@ -167,40 +205,13 @@ Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
 
 ![](./Images/mirror_repo1.png)
 
-5. Em 'Connection', clique em **Create a Connection**.
+5. Selecione, em 'Connection', a conexão criada anteriormente, em 'Repository', o repo no GitHub, e então clique em **Mirror Repository**.
 
 ![](./Images/mirror_repo2.png)
 
-![](./Images/017-LAB4.png)
+![](./Images/mirrored_repo.png)
 
-6. Na página do repositório recém-criado, clique em **HTTPS** e:
-
-- [1] Copie para o bloco de notas a informação do usuário a ser utilizado para trabalhar com o git (**Usuário Git**).
-- [2] Copie o comando git clone e o execute no Cloud Shell.
-
-![](./Images/018-LAB4.png)
-
-7. No Cloud Shell, ao executar o comando, informe o **Usuario Git** recém-copiado, e o seu **Auth Token** como senha.
-
-8. Neste momento, o Cloud Shell deve possuir dois novos diretórios:
- - BackendFTDev
- - ftRepo
- 
-![](./Images/019-LAB4.png)
-
-9. Execute os seguintes comandos para copiar o conteúdo do repositório **BackendFTDev**, para o repositório **ftRepo**.
-
-```shell
- git config --global user.email "<seu-email>"
- git config --global user.name "<seu-username>"
- cp -r BackendFTDev/* ftRepo/
- cd ftRepo
- git add -A
- git commit -m "Início do projeto"
- git push origin main
-```
-
-*Ao final do último comando o **Usuário git** e a senha (**Auth Token**) poderão ser solicitados novamente*.
+Com isso, concluímos o espelhamento do repo no GitHub para o projeto OCI DevOps! Podemos seguir agora com os próximos passos!
 
 - - -
 
@@ -493,7 +504,7 @@ svc-app        LoadBalancer   10.96.252.115   <svc-app-ip>   80:31159/TCP     29
 svc-java-app   LoadBalancer   10.96.16.229    <EXTERNAL-IP>   8081:32344/TCP   103m
 ```
 
-  8. No **Cloud Shell**, execute o comando abaixo substituindo a informação de `<EXTERNAL-IP>` pelo IP copiado.
+8. No **Cloud Shell**, execute o comando abaixo substituindo a informação de `<EXTERNAL-IP>` pelo IP copiado.
 
 - Você deverá visualizar como resposta a soma dos preços dos produtos! Experimente modificar os valores para checar a soma!
 
