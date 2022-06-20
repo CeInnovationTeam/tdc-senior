@@ -496,35 +496,49 @@ Parabéns por chegar até aqui!! Nosso pipeline já está pronto! No próximo pa
 
 ## <a name="Passo6"></a> Passo 6: Validação da implementação
 
-1.  Retorne ao projeto clicando no 🍔 menu hambúrguer e acessando: **Developer Services**  → **Projects**.
+1.  Retorne ao projeto clicando no 🍔 menu hambúrguer e acessando: **Developer Services** → **DevOps** → **Projects**.
 
-2.  Retorne à configuração do pipeline de build do projeto selecionando **Build Pipelines** → **build**.
-  
-![](./Images/055-LAB4.png)
-
-3. No canto direito superior, selecione **Start Manual Run**.
-
-![](./Images/055_1-LAB4.png)
-
-4. Mantenha as informações do formulário padrão, e clique em **Start Manual Run**.
-
-5. Aguarde a execução do fluxo.
-
-6. Acesse novamente o Cloud Shell e execute o comando abaixo.
+2. Obtenha o código da aplicação MuShop (storefront) e realize o push para o seu repo pessoal, no GitHub.
 
 ```shell
-kubectl get svc
+https://github.com/PortoLucas1/mushop
 ```
 
-7. Copie a informação de EXTERNAL-IP do serviço _svc-java-app_ assim que estiver disponível.
+3. No menu do lado esquerdo, selecione **Build History**.
+
+4. Após um curto intervalo, você deverá visualizar que o build pipeline foi iniciado.
+
+![](./Images/trigger_start.png)
+
+5. O pipeline será executado assim como configurado e ativará o deployment pipeline conectado.
+
+![](./Images/build_running.png)
+
+![](./Images/deployment_running.png)
+
+6. Finalizadas as execuções, no Cloud Shell, no canto superior direito, execute o comando abaixo:
+
+![](./Images/cloud_shell.png)
 
 ```shell
-NAME           TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)          AGE
-kubernetes     ClusterIP      10.96.0.1       <none>            443/TCP          30h
-svc-app        LoadBalancer   10.96.252.115   <svc-app-ip>   80:31159/TCP     29h
-svc-java-app   LoadBalancer   10.96.16.229    <EXTERNAL-IP>   8081:32344/TCP   103m
+kubectl get svc -n mushop --field-selector metadata.name=svc-mushop-demo
 ```
 
-8. No **Cloud Shell**, execute o comando abaixo substituindo a informação de `<EXTERNAL-IP>` pelo IP copiado.
+7. Você deverá obter o seguinte:
+```shell
+NAME              TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)          AGE
+svc-mushop-demo   LoadBalancer   10.96.204.188   <external-ip>   8080:30204/TCP   176m
+```
+
+8. Cole o ip do campo 'EXTERNAL-IP' no seu browser, seguido da porta 8080:
+
+```shell
+http://<external-ip>:8080
+```
+
+9. Você deverá visualizar a aplicação implementada (de forma customizada)!
+
+![](./Images/app_noar.png)
+
 
 ### 👏🏻 Parabéns!!! Você foi capaz de construir com sucesso um pipeline completo de **DevOps** na OCI para a aplicação MuShop! 🚀
