@@ -1,0 +1,11 @@
+1.	Faça o login em sua conta na OCI.
+2.	No menu hambúrguer 🍔, acesse: Identity & Security→ Web Application Firewal 
+3.	Clique em Create Policy
+4.	Em Basic Information, informe o nome da sua politica 
+5.	Prosseguindo, a opção que vamos utilizar é de Rate Limiting
+6.	Clique em Add rate limiting rule
+7.	Vamos configurar a regra com um nome, e request limit (1) e Period in seconds (5).
+8.	É importante também selecionar a regra para ação (Pre-configured 401 Response Code Action) e após isso botão de add rate limiting rule
+9.	Outro ponto importante de se configurar é o load balancer da nossa aplicação, portanto escolha o compartimento em que ele está e selecione-o.
+10.	Por ultimo revisar sua configurar e só clicar em “create WAF policy”
+ 
