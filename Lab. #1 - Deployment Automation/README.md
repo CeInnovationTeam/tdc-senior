@@ -23,8 +23,11 @@ Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
   - [Passo 4.1: Criação do kubernetes secret](#Passo4.1)
   - [Passo 4.2: Adição de environment no OCI DevOps](#Passo4.2)
   - [Passo 4.3: Criação de artefato de deployment](#Passo4.3)
-- [Passo 5: Criação do trigger de início e do trigger de conexão dos pipelines de CI e de CD](#Passo5)
-- [Passo 6: Validar implementação](#Passo6)
+  - [Passo 4.4: Criação de pipeline de deployment](#Passo4.4)
+- [Passo 5: Criação dos triggers de início e de conexão dos pipelines de CI e de CD](#Passo5)
+  - [Passo 5.1: Criação do trigger de início do build pipeline](#Passo5.1)
+  - [Passo 5.2: Criação do trigger de conexão entre os pipelines de build e deployment](#Passo5.2)
+- [Passo 6: Validação da implementação](#Passo6)
 
  - - -
 
@@ -336,9 +339,9 @@ kubectl create secret docker-registry ocisecret --docker-server=iad.ocir.io --do
 ### <a name="Passo4.2"></a> Passo 4.2: Adição de Environment no OCI DevOps
 Vamos agora adicionar o cluster kubernetes como ambiente alvo no projeto OCI DevOps.
 
-1. Retorne ao seu projeto DevOps clicando no menu hambúrguer 🍔 e acessando: **Developer Services**  → **Projects**.
+1. Retorne ao seu projeto DevOps clicando no menu hambúrguer 🍔 e acessando: **Developer Services** → **DevOps** → **Projects**.
 
-1. No canto esquerdo, selecione **Environments**.
+2. No canto esquerdo, selecione **Environments**.
          
 ![](./Images/040-LAB4.png)
 
@@ -355,107 +358,130 @@ Vamos agora adicionar o cluster kubernetes como ambiente alvo no projeto OCI Dev
 
 ### <a name="Passo4.3"></a> Passo 4.3: Criação de artefato de deployment
 
-Nesse momento, vamos adicionar o arquivo deployment.yaml no artifact registry, para utilizá-lo no pipeline de deployment.
+Nesse momento, vamos adicionar o arquivo deployment.yaml como artefato no OCI DevOps.
 
-Para aprofundar seu conhecimento neste serviço, acesse o link abaixo! 👇
+1. Copie o [deployment.yaml](./scripts/deployment.yaml) para um novo bloco de notas.
 
-- 🧾 [Documentação do OCI Artifact Registry](https://docs.oracle.com/en-us/iaas/Content/artifacts/home.htm)
+2. Acesse o seu projeto DevOps clicando no menu hambúrguer 🍔 e acessando: **Developer Services** → **DevOps** → **Projects**.
 
-1. Copie o [deployment.yaml](./scripts/deployment.yaml) para um novo bloco de notas e salve o arquivo.
-
-2. Na OCI, no menu de hambúrguer 🍔, acesse: **Developer Services** → **Containers & Artifacts** → **Artifact Registry**.
-
-![](./Images/artifact_registry1.png)
-
-3. Clique em **Create Repository**.
-
-![](./Images/artifact_registry2.png)
-
-6. No canto esquerdo selecione **Artifacts** em seguida em **Add Artifact**.
+3. No canto esquerdo selecione **Artifacts** em seguida em **Add Artifact**.
           
 ![](./Images/042-LAB4.png)
 
-7. Preencha o formulario como abaixo e clique em **Add**.
+11. Preencha o formulario como abaixo e clique em **Add**.
  - **Name**: deployment.yaml
  - **Type**: Kubernetes manifest
  - **Artifact Source**: Inline
- - **Value**: Cole o conteúdo do arquivo https://github.com/CeInnovationTeam/BackendFTDev/blob/main/scripts/deployment.yaml
- *Não altere a identação (espaços) do documento, pois isso pode quebrá-lo*.
+ - **Value**: *Cole o conteúdo do arquivo deployment.yaml*
  - **Replace parameters used in this artifact**: Yes, substitute placeholders
           
-![](./Images/043_0-LAB4.png)
+![](./Images/deployment_yaml.png)
 
-8. No canto esquerdo, selecione **Deployment Pipelines** e, em seguida, clique em **Create Pipeline**.
+### <a name="Passo4.4"></a> Passo 4.4: Criação de pipeline de deployment
+
+1. No canto esquerdo, selecione **Deployment Pipelines** e, em seguida, clique em **Create Pipeline**.
           
 ![](./Images/044-LAB4.png)
 
-9. Preencha o formulário como abaixo e clique em **Create pipeline**.
+2. Preencha o formulário como abaixo e clique em **Create pipeline**.
  - **Pipeline name**: deploy
  - **Description**: (Defina uma descrição qualquer).
           
 ![](./Images/048-LAB4.png) 
-          
-![](./Images/049-LAB4.png)
 
-10. Retorne à aba de **Pipeline** e clique em **Add Stage**.
+3. Na aba de 'Pipeline', clique em **Add Stage**.
           
 ![](./Images/050-LAB4.png)
 
-11. Selecione a Opção **Apply Manifest to your Kubernetes Cluster** e clique em **Next**.
+4. Selecione a Opção **Apply Manifest to your Kubernetes Cluster** e clique em **Next**.
           
 ![](./Images/051-LAB4.png)
 
-12. Preencha o formulário da seguinte forma:
+5. Preencha o formulário da seguinte forma:
  - **Name**: Deployment da Aplicacao
  - **Description**: (Defina uma Descrição qualquer).
  - **Environment**: OKE
 
 ![](./Images/052_0-LAB4.png)
 
-13. Clique em **Select Artifact**, e selecione **deployment.yaml**.
+6. Clique em **Select Artifact**, e selecione **deployment.yaml**.
 
 ![](./Images/052_1-LAB4.png)
 
-14. Feito isto, clique em **Add**.
+7. Feito isto, insira 'mushop' em **Override Kubernetes namespace** e clique em **Add**.
+
+![](./Images/deployment_pipeline1_1.png)
  
-Com isso finalizamos a parte de Deployment (CD) do nosso projeto! No passo a seguir vamos conectar ambos os pipelines, e definir um gatilho (trigger) para que o processo automatizado se inicie!
+Com isso finalizamos a parte de Deployment (CD) do nosso projeto! No passo a seguir vamos conectar ambos os pipelines, e definir um trigger para que o processo automatizado se inicie!
 
 - - -
 
-## <a name="Passo5"></a> Passo 5: Criação do trigger de início e do trigger de conexão dos pipelines de CI e de CD
+## <a name="Passo5"></a> Passo 5: Criação dos triggers de início e de conexão dos pipelines de CI e de CD
 
-1. Retorne ao projeto clicando no 🍔 menu hambúrguer e acessando: **Developer Services**  → **Projects**.
-  2. No canto esquerdo selecione **Triggers**, e em seguida clique em **Create Trigger**.
+### <a name="Passo5.1"></a> Passo 5.1: Criação do trigger de início do build pipeline
 
-  ![](./Images/053-LAB4.png)
+1. Retorne ao projeto clicando no 🍔 menu hambúrguer e acessando: **Developer Services** → **DevOps** → **Projects**.
 
-  3. Preencha o formulário como abaixo e clique em **Create**.
-  - **Name**: Inicio
+2. No canto esquerdo selecione **Triggers**, e em seguida clique em **Create Trigger**.
+
+![](./Images/053-LAB4.png)
+
+3. Preencha o formulário como abaixo e clique em **Add action**.
+  - **Name**: trigger-mushop
   - **Description**: (Defina uma descrição qualquer).
-  - **Source connection**: OCI Code Repository
-  - **Select code repository**: ftRepo
-  - **Actions**: Add Action
-    - **Select Build Pipeline**: build
-    - **Event**: Push (check) 
-    - **Source branch**: main
+  - **Source connection**: GitHub
 
-![](./Images/054-LAB4.png)
+![](./Images/trigger1.png)
 
-*A partir desse momento, qualquer novo push feito no repositório do projeto iniciará o pipeline de build criado nesse workshop*.
+4. Preencha o formulário como abaixo e clique em **Save**.
+  - **Select Build Pipeline**: build
+  - **Event**: Push (check) 
+  - **Source branch**: main
 
-4. Retorne à configuração do pipeline de build do projeto selecionando **Build Pipelines** → **build**.
+![](./Images/trigger2.png)
+
+5. Então, clique em **Create**.
+
+![](./Images/trigger3.png)
+
+6. Copie o 'Trigger URL' e o 'Trigger Secret' para um bloco de notas, então clique em **Close**.
+
+![](./Images/trigger4.png)
+
+*Nesse momento, vamos então configurar o envio da notificação de push do repo no github para o OCI DevOps*.
+
+7. No GitHub, acesse o seu repo e clique em **Settings**.
+
+![](./Images/github_webhook1.png)
+
+8. No lado esquerdo, clique em **Webhooks** e, então, em **Add webhook**.
+
+![](./Images/github_webhook2.png)
+
+9. Preencha o formulário como abaixo e clique em **Add webhook**.
+  - **Payload URL**: *Copiado anteriormente*
+  - **Content type**: application/json
+  - **Secret**: *Copiado anteriormente*
+
+![](./Images/github_webhook3.png)
+
+*A partir desse momento, qualquer novo push feito no repositório do github iniciará o pipeline de build criado nesse workshop*.
+
+### <a name="Passo5.2"></a> Passo 5.2: Criação do trigger de conexão entre os pipelines de build e deployment
+
+1. Retorne à configuração do pipeline de build do projeto selecionando **Build Pipelines** → **build**.
 
 ![](./Images/055-LAB4.png)
 
-  5. Na aba de Build Pipeline, clique no sinal de **"+"** abaixo do stage **Entrega de Imagem de Container** e clique em **Add Stage**.
+2. Na aba de Build Pipeline, clique no sinal de **"+"** abaixo do stage **Entrega de Imagem de Container** e clique em **Add Stage**.
 
-![](./Images/056-LAB4.png)
+![](./Images/trigger_cicd.png)
 
-6. Selecione o item de **Trigger Deployment**, e clique em **Next**.
+3. Selecione o item de **Trigger Deployment**, e clique em **Next**.
 
 ![](./Images/057-LAB4.png)
 
-7. Preencha o formulário como abaixo e clique em **Add**.
+4. Preencha o formulário como abaixo e clique em **Add**.
 - **Nome**: Inicio de Deployment
 - **Description**: (Defina uma descrição qualquer).
 - **Select deployment pipeline**: deploy
@@ -464,27 +490,33 @@ Com isso finalizamos a parte de Deployment (CD) do nosso projeto! No passo a seg
 
 ![](./Images/058-LAB4.png)
 
+![](./Images/trigger_cicd2.png)
+
 Parabéns por chegar até aqui!! Nosso pipeline já está pronto! No próximo passo iremos validar o projeto, checando se está tudo ok.
 
- ## <a name="Passo6"></a> Passo 6: Execução e testes
-  1.  Retorne ao projeto clicando no 🍔 menu hambúrguer e acessando: **Developer Services**  → **Projects**.
-  2.  Retorne à configuração do pipeline de build do projeto selecionando **Build Pipelines** → **build**.
-  
-  ![](./Images/055-LAB4.png)
+## <a name="Passo6"></a> Passo 6: Validação da implementação
 
-  3. No canto direito superior, selecione **Start Manual Run**.
+1.  Retorne ao projeto clicando no 🍔 menu hambúrguer e acessando: **Developer Services**  → **Projects**.
+
+2.  Retorne à configuração do pipeline de build do projeto selecionando **Build Pipelines** → **build**.
+  
+![](./Images/055-LAB4.png)
+
+3. No canto direito superior, selecione **Start Manual Run**.
 
 ![](./Images/055_1-LAB4.png)
 
-  4. Mantenha as informações do formulário padrão, e clique em **Start Manual Run**.
-  5. Aguarde a execução do fluxo.
-  6. Acesse novamente o Cloud Shell e execute o comando abaixo.
+4. Mantenha as informações do formulário padrão, e clique em **Start Manual Run**.
 
-  ```shell
-  kubectl get svc
-  ```
+5. Aguarde a execução do fluxo.
 
-  7. Copie a informação de EXTERNAL-IP do serviço _svc-java-app_ assim que estiver disponível.
+6. Acesse novamente o Cloud Shell e execute o comando abaixo.
+
+```shell
+kubectl get svc
+```
+
+7. Copie a informação de EXTERNAL-IP do serviço _svc-java-app_ assim que estiver disponível.
 
 ```shell
 NAME           TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)          AGE
