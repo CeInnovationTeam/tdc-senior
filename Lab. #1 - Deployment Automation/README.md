@@ -15,8 +15,9 @@ Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
   - [Passo 1.1: GitHub repo e Personal Access Token](#Passo1.1)
   - [Passo 1.2: Vault Secret](#Passo1.2)
   - [Passo 1.3: Notifications Topic](#Passo1.3)
-  - [Passo 1.4: Criação de External Connection](#Passo1.4)
-  - [Passo 1.5: Repo Github espelhado](#Passo1.5)
+  - [Passo 1.4: Criação do OCI DevOps Project](#Passo1.4)
+  - [Passo 1.5: Criação de External Connection](#Passo1.5)
+  - [Passo 1.6: Repo Github espelhado](#Passo1.6)
 - [Passo 2: Criar pipeline de build e configurar criação da container image (CI)](#Passo2)
 - [Passo 3: Configurar entrega da container image (CI)](#Passo3)
 - [Passo 4: Criar pipeline de deploy e configurar entrega da aplicação ao cluster Kubernetes (CD)](#Passo4)
@@ -176,8 +177,9 @@ Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
 
 ![](./Images/notifications_create3.png)
 
-### <a name="Passo1.4"></a> Passo 1.4: Criação de External Connection
-Nessa etapa, vamos configurar propriamente a conexão de um projeto do OCI DevOps ao repositório no GitHub.
+### <a name="Passo1.4"></a> Passo 1.4: Criação do OCI DevOps Project
+
+Nessa etapa, vamos então criar um projeto no OCI DevOps.
 
 1. Na OCI, no menu de hambúrguer 🍔, acesse: **Developer Services** → **DevOps** → **Projects**.
   
@@ -191,7 +193,23 @@ Nessa etapa, vamos configurar propriamente a conexão de um projeto do OCI DevOp
 
 ![](./Images/devops_create1.png)
 
-4. Clique no projeto DevOps criado e, na página do projeto, clique em **External Connections**.
+4. No projeto criado, clique em **Enable Log**.
+
+![](./Images/enable_log1.png)
+
+5. Clique no seletor, na coluna 'Enable log'.
+
+![](./Images/enable_log2.png)
+
+6. Mantenha as configurações como padrão e clique em **Enable Log**.
+
+![](./Images/enable_log3.png)
+
+### <a name="Passo1.5"></a> Passo 1.5: Criação de External Connection
+
+Nessa etapa, vamos configurar propriamente a conexão do projeto do OCI DevOps ao repositório no GitHub.
+
+1. No menu do lado esquerdo, clique em **External Connections**.
 
 ![](./Images/external_connection1.png)
 
@@ -203,7 +221,7 @@ Nessa etapa, vamos configurar propriamente a conexão de um projeto do OCI DevOp
 
 ![](./Images/external_connection3.png)
 
-### <a name="Passo1.5"></a> Passo 1.5: Repo Github espelhado
+### <a name="Passo1.6"></a> Passo 1.6: Repo Github espelhado
 
 1. Na página do projeto, clique em **Code Repositories**.
 
@@ -329,7 +347,7 @@ Nesse momento, iremos inicialmente criar o [kubernetes secret](https://kubernete
 1. Copie o comando abaixo para o seu bloco de notas e o edite substituindo os campos destacados por '<>'.
 
  ```shell
-kubectl create secret docker-registry ocisecret --docker-server=iad.ocir.io --docker-username='<tenancy-namespace>/oracleidentitycloudservice/<e-mail>' --docker-password='<auth-token>' --docker-email='<e-mail>' -n mushop
+kubectl create secret docker-registry ocisecret --docker-server=<código-da-região>.ocir.io --docker-username='<tenancy-namespace>/oracleidentitycloudservice/<e-mail>' --docker-password='<auth-token>' --docker-email='<e-mail>' -n mushop
  ```
 
 2. Então, no **Cloud Shell**, execute o comando anterior.
