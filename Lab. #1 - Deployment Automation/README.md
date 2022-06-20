@@ -1,5 +1,7 @@
 # Lab. #1 - Deployment Automation
 
+![](./Images/oci_devops_lab.png)
+
 ⏱ Tempo de execução: ~65min.
 
 Neste lab, você construirá uma esteira de desenvolvimento com o serviço **OCI DevOps**, que irá automatizar a entrega da aplicação MuShop, de forma conteinerizada, a um cluster Kubernetes na OCI!
@@ -247,7 +249,7 @@ Com isso, concluímos o espelhamento do repo no GitHub para o projeto OCI DevOps
 
 2. Clique em **Create build pipeline**. 
 
- ![](./Images/build_pipe1.png)
+![](./Images/build_pipe1.png)
 
 3. Preencha o formulário da seguinte forma, e clique em **Create**:
    - **Name**: build
