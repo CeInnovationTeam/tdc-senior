@@ -92,8 +92,8 @@ Precisaremos criar dynamic groups e associar policies a estes, para que os recur
 
 Para aprofundar seu conhecimento nestes serviços, acesse os links abaixo! 👇
 
-- 🌀 [x](x)
-- 🧾 [x](x)
+- 📇 [Página oficial do IAM](https://www.oracle.com/security/identity-management/)
+- 🧾 [Documentação oficial do IAM](https://docs.oracle.com/en-us/iaas/Content/Identity/home1.htm)
 
 1. Na OCI, no menu de hambúrguer 🍔, acesse: **Identity & Security** → **Identity** → **Compartments**.
 
