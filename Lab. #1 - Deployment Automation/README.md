@@ -12,7 +12,7 @@ Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
 - 🧾 [Documentação do OCI DevOps](https://docs.oracle.com/en-us/iaas/Content/devops/using/home.htm)
 
 **Confira todo o passo-a-passo dessa implementação:**
-- [Pre Reqs: Coletar dados necessários](#PreReqs)
+- [Pre Reqs: Coletar dados necessários e configurar policies](#PreReqs)
 - [Passo 1: Espelhar um repo no github para o projeto OCI DevOps](#Passo1)
   - [Passo 1.1: GitHub repo e Personal Access Token](#Passo1.1)
   - [Passo 1.2: Vault Secret](#Passo1.2)
@@ -34,7 +34,7 @@ Para aprofundar seu conhecimento neste serviço, acesse os links abaixo! 👇
 
  - - -
 
- ## <a name="PreReqs"></a> Pre Reqs: Coletar dados necessários
+ ## <a name="PreReqs"></a> Pre Reqs: Coletar dados necessários e configurar policies
  
 Vamos coletar alguns dados na tenancy da OCI que serão utilizados ao longo do laboratório. Recomendamos que os anote em um bloco de notas para ter sempre em mãos, de modo fácil. Serão coletados os seguintes dados:
 
@@ -85,8 +85,66 @@ Código da Região:
 
 3. Para as demais regiões, confira neste [link](https://docs.oracle.com/en-us/iaas/Content/Registry/Concepts/registryprerequisites.htm#regional-availability).
 
-2. Copie o valor correspondente à sua região para o bloco de notas.
- 
+4. Copie o valor correspondente à sua região para o bloco de notas.
+
+### Criação de policies
+Precisaremos criar dynamic groups e associar policies a estes, para que os recursos possam ter permissões para algumas execuções.
+
+Para aprofundar seu conhecimento nestes serviços, acesse os links abaixo! 👇
+
+- 🌀 [x](x)
+- 🧾 [x](x)
+
+1. Na OCI, no menu de hambúrguer 🍔, acesse: **Identity & Security** → **Identity** → **Compartments**.
+
+![](./Images/compartments1.png)
+
+2. Busque pelo compartment onde irá provisionar os recursos e copie o seu OCID.
+
+![](./Images/compartments2.png)
+
+3. Na OCI, no menu de hambúrguer 🍔, acesse: **Identity & Security** → **Identity** → **Dynamic Groups**.
+
+![](./Images/dynamic_groups1.png)
+
+4. Então, clique em **Create Dynamic Group**.
+
+![](./Images/dynamic_groups2.png)
+
+5. Atribua um nome e uma descrição ao dg, insira as seguintes regras e clique em **Create**. Lembre-se de substituir `<seu-compartment-id>`.
+
+*Para inserir uma regra adicional, clique em '+ Additional Rule'.*
+
+```shell
+Rule 1: Any {instance.compartment.id = '<seu-compartment-id>'}
+Rule 2: Any {resource.type = 'cluster', resource.compartment.id = '<seu-compartment-id>'}
+Rule 3: Any{resource.type = 'devopsbuildpipeline', resource.compartment.id = '<seu-compartment-id>'}
+Rule 4: Any{resource.type = 'devopsdeploypipeline', resource.compartment.id = '<seu-compartment-id>'}
+Rule 5: Any {resource.type = 'devopsdeploypipeline', resource.compartment.id = '<seu-compartment-id>'}
+```
+
+![](./Images/dynamic_groups3.png)
+
+6. No menu do lado esquerdo, clique em **Policies** e em **Create Policy**.
+
+![](./Images/policies1.png)
+
+7. Escolha o compartment 'root, atribua um nome e descrição ao conjunto de policies, marque a opção 'Show manual editor', insira as seguintes policies e clique em **Create**.
+
+*Lembre-se de substituir `<seu-dg>` pelo nome do seu dynamic group.*
+
+```shell
+Allow dynamic-group <seu-dg> to read metrics in tenancy
+Allow dynamic-group <seu-dg> to read compartments in tenancy
+Allow dynamic-group <seu-dg> to manage repos in tenancy
+Allow dynamic-group <seu-dg> to manage devops-family in tenancy
+Allow service vulnerability-scanning-service to read repos in tenancy
+Allow service vulnerability-scanning-service to read compartments in tenancy
+Allow dynamic-group <seu-dg> to use generic-artifacts in tenancy
+```
+
+![](./Images/policies2.png)
+
 É isso! Cumprimos todos os pré-requisitos para o laboratório! Vamos para os próximos passos!
 
 - - -
@@ -348,7 +406,7 @@ Nesse momento, iremos inicialmente criar o [kubernetes secret](https://kubernete
 
 1. Copie o comando abaixo para o seu bloco de notas e o edite substituindo os campos destacados por '<>'.
 
- ```shell
+```shell
 kubectl create secret docker-registry ocisecret --docker-server=<código-da-região>.ocir.io --docker-username='<tenancy-namespace>/oracleidentitycloudservice/<e-mail>' --docker-password='<auth-token>' --docker-email='<e-mail>' -n mushop
  ```
 
@@ -562,3 +620,5 @@ http://<external-ip>:8080
 
 
 ### 👏🏻 Parabéns!!! Você foi capaz de construir com sucesso um pipeline completo de **DevOps** na OCI para a aplicação MuShop! 🚀
+
+PS: Caso tenha encontrado algum erro ou inconsistência neste guia, não deixe de nos informar! :)
