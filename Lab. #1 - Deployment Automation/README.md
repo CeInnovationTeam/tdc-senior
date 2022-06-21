@@ -404,13 +404,19 @@ Com isso, concluímos o espelhamento do repo no GitHub para o projeto OCI DevOps
 
 Nesse momento, iremos inicialmente criar o [kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/), para permitir que o cluster colete a container image durante o deployment. Iremos criar o secret no namespace 'mushop'.
 
-1. Copie o comando abaixo para o seu bloco de notas e o edite substituindo os campos destacados por '<>'.
+1. No **Cloud Shell**, execute o seguinte comando:
+
+```shell
+kubectl create namespace mushop
+```
+
+2. Copie o comando abaixo para o seu bloco de notas e o edite substituindo os campos destacados por '<>'.
 
 ```shell
 kubectl create secret docker-registry ocisecret --docker-server=<código-da-região>.ocir.io --docker-username='<tenancy-namespace>/oracleidentitycloudservice/<e-mail>' --docker-password='<auth-token>' --docker-email='<e-mail>' -n mushop
  ```
 
-2. Então, no **Cloud Shell**, execute o comando anterior.
+3. Então, no **Cloud Shell**, execute o comando anterior.
 
 ![](./Images/secret_created.png)
 
