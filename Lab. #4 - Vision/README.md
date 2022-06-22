@@ -181,7 +181,7 @@ Notar que agora consta “Labeled: 527/527” rotuladas. A etapa de preparação
 [](./Images/Image_27)
 
 21.	Então vamos definir que pegaremos nosso dataset do Data Labeling, e mais precisamente, qual será esse dataset! (lembre-se com carinho dos nomes que você deu pra eles!)
-[](./Images/Image_27)
+[](./Images/Image_28)
 Feito isso, basta clicar na opção “Next” e partir para o treinamento do modelo.
 
 22.	Na página seguinte, além do nome do modelo vamos escolher outro parâmetro muito importante: seu tempo de treino. Basta definir entre 3 opções:
@@ -189,15 +189,15 @@ Feito isso, basta clicar na opção “Next” e partir para o treinamento do mo
 * 	Rápido (também definido pelo próprio Vision, mas consideravelmente mais rápido, e consequentemente menos preciso)
 * 	Customizado (definido pelo usuário)
 A precisão do modelo, obviamente, é fortemente dependente do seu tempo de treino, portanto, em geral, a opção Recomendada é a recomendada (rsrs). Novamente, escolha um nome bastante descritivo que você vá lembrar futuramente.
-[](./Images/Image_28)
+[](./Images/Image_29)
 
 Escolhidos estes parâmetros, basta clicar em “Next”, revisar as informações e, finalmente, clicar em “Create and Train”:
-[](./Images/Image_29)
+[](./Images/Image_30)
 
 Agora é só esperar a mágica acontecer! O Vision irá extrair o Dataset do Data Labeling, provisionar uma instância para efetuar estre treinamento e efetuar todo o deploy e disponibilização do modelo automaticamente. (Não se deixe enganar pelo “Training Duration” de 24 horas; esse é o máximo possível tolerado pela ferramenta; será muito mais rápido do que isso).
 
 Durante o processo de treino, temos a seguinte tela:
-[](./Images/Image_30)
+[](./Images/Image_31)
 
 Ao fim do processo, esta tela estará:
 [](./Images/Image_31)
@@ -209,7 +209,8 @@ Importante notar as métricas de treino do modelo, de Precisão, Recall e Score 
 
 
 Após arrastada a imagem, podemos ver os retornos do modelo, sendo composto pela confiança em cada uma das classes:
-[](./Images/Image_33)
+[](./Images/Image_34)
+[](./Images/Image_35)
 
 
 
