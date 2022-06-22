@@ -45,7 +45,7 @@ Após verificar se estamos no compartimento correto, vamos então criar um novo 
 Em seguida, importante! Selecionar o formato de dado que seu dataset conterá (imagens, textos ou documentos). Como no nosso caso trabalharemos com um classificador de imagens, selecionamos a opção de “images”:
 ![](./Images/Image_8)
 
-Por útlimo, selecionar o tipo de rótulo de nossas imagens, se elas são do tipo “single label”, “multi-label” ou ainda “object detection”. Como nosso modelo é de uma classificação onde cada imagem só pode estar em uma única categoria, cada imagem só pode ter um rótulo (covid ou normal), e portanto vamos selecionar a opção “single label”:
+Por útlimo, selecionar o tipo de rótulo de nossas imagens, se elas são do tipo **“single label”**, **“multi-label”** ou ainda **“object detection”**. Como nosso modelo é de uma classificação onde cada imagem só pode estar em uma única categoria, cada imagem só pode ter um rótulo (covid ou normal), e portanto vamos selecionar a opção **“single label”**:
 ![](./Images/Image_9)
 
 Feito isso, clicamos no botão “next” e partimos para a próxima etapa.
@@ -56,7 +56,7 @@ Feito isso, clicamos no botão “next” e partimos para a próxima etapa.
 Então, definimos de onde esses dados virão; ou seja, o bucket onde fizemos o upload nos passos iniciais (por isso, importante lembrar o nome do bucket!):
 [](./Images/Image_11)
 
-Por último, mas não menos importante, vamos definir os rótulos que este dataset terá. Como nós estamos tratando de uma classificação onde cada imagem terá apenas uma única categoria, temos apenas dois rótulos: Exótico e Sphynx. Para inserir um rótulo, basta digitar seu nome e apertar “Enter”, e em seguida digitar os outros que possam existir.
+Por último, mas não menos importante, vamos definir os rótulos que este dataset terá. Como nós estamos tratando de uma classificação onde cada imagem terá apenas uma única categoria, temos apenas dois rótulos: **Exótico** e **Sphynx**. Para inserir um rótulo, basta digitar seu nome e apertar “Enter”, e em seguida digitar os outros que possam existir.
 [](./Images/Image_12)
 
 Após este passo, basta clicar em “Next” novamente, rever as informações e finalmente clicar em “Create”, no mesmo local onde ficavam os botões de “Next” nos passos anteriores. 
@@ -123,7 +123,7 @@ Vamos alterar as seguintes linhas:
 * **`compartment_id = "<Compartment OCID>"`**
 * **`dataset_id = "<DLS Dataset OCID>"`**
 * **`labels = ["<label 1>", "<label 2>", "<label 3>"]`**
-* **`Labeling Algorithms`**
+* **`Labeling Algorithm = first_match`**
 
 Estas informações podem ser encontradas analisando o compartimento em questão: 
 [](./Images/Image_17)
@@ -132,7 +132,7 @@ Para acessar, basta digitar “Compartments” na aba de busca para encontrar os
 Para o Dataset, acessamos novamente o Data Labeling, clicamos em “Datasets” e em seguida selecionamos aquele que acabou de ser criado. Seu OCID aparece desta forma: 
 [](./Images/Image_18)
 
-(Atenção para a informação de dados rotulados: Labeled: 0/527. Mostrando que nenhuma das 527 imagens possuí rótulo. 
+(Atenção para a informação de dados rotulados: Labeled: 0/527. Mostrando que nenhuma das 527 imagens ainda possuí rótulo atribuído. 
 
 Na linha de código contendo os rótulos (labels), vamos preencher com os rótulos envolvidos no nosso caso, que são Covid e Normal. Sendo assim, nossa linha de código seria: 
 
