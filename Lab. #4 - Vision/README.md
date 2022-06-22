@@ -6,7 +6,7 @@ Vamos criar um modelo de Visão Computacional Customizado, utilizando a um model
 
 2.	  Agora, faremos a criação do Object Storage no OCI. Para isso, inicialmente, vamos criar um Bucket onde armazenaremos nossas imagens. 
 A sequência:
-<center>Menu de Hamburger -> Storage -> Object Storage -> Buckets</center>
+Menu de Hamburger -> Storage -> Object Storage -> Buckets
 
 Menu de Hamburger
 ![](./Images/Image_1)
@@ -196,8 +196,19 @@ Escolhidos estes parâmetros, basta clicar em “Next”, revisar as informaçõ
 Agora é só esperar a mágica acontecer! O Vision irá extrair o Dataset do Data Labeling, provisionar uma instância para efetuar estre treinamento e efetuar todo o deploy e disponibilização do modelo automaticamente. (Não se deixe enganar pelo “Training Duration” de 24 horas; esse é o máximo possível tolerado pela ferramenta; será muito mais rápido do que isso).
 
 Durante o processo de treino, temos a seguinte tela:
-[](./Images/Image_29)
+[](./Images/Image_30)
 
+Ao fim do processo, esta tela estará:
+[](./Images/Image_31)
+
+Importante notar as métricas de treino do modelo, de Precisão, Recall e Score F1; métricas muito importantes para avaliar a performance do modelo.
+
+23.	Terminado o treino e deploy do modelo, basta agora utilizá-lo. Para isto, basta, descer esta mesma tela até a interface com o modelo. Vamos utilizar exemplos locais, arrastando imagens de gatos locais até a área dedicada.
+[](./Images/Image_32)
+
+
+Após arrastada a imagem, podemos ver os retornos do modelo, sendo composto pela confiança em cada uma das classes:
+[](./Images/Image_33)
 
 
 
