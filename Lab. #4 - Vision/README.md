@@ -119,10 +119,11 @@ Os pontos em negrito são os que devem ser alterados:
 *	Region (caso a sua região não seja Ashburn)
 
 Vamos alterar as seguintes linhas: 
-**`region_identifier="us-ashburn-1"`**
-**`compartment_id = "<Compartment OCID>"`**
-**`dataset_id = "<DLS Dataset OCID>"`**
-**`labels = ["<label 1>", "<label 2>", "<label 3>"]`**
+* **`region_identifier="us-ashburn-1"`** (caso sua região não seja Ashburn)
+* **`compartment_id = "<Compartment OCID>"`**
+* **`dataset_id = "<DLS Dataset OCID>"`**
+* **`labels = ["<label 1>", "<label 2>", "<label 3>"]`**
+* **`Labeling Algorithms`**
 
 Estas informações podem ser encontradas analisando o compartimento em questão: 
 [](./Images/Image_17)
@@ -184,9 +185,9 @@ Notar que agora consta “Labeled: 527/527” rotuladas. A etapa de preparação
 Feito isso, basta clicar na opção “Next” e partir para o treinamento do modelo.
 
 22.	Na página seguinte, além do nome do modelo vamos escolher outro parâmetro muito importante: seu tempo de treino. Basta definir entre 3 opções:
-1. 	Recomendado (o próprio Vision define o tempo ideal baseado na complexidade e tamanho do dataset e da tarefa a ser realizada)
-2. 	Rápido (também definido pelo próprio Vision, mas consideravelmente mais rápido, e consequentemente menos preciso)
-3. 	Customizado (definido pelo usuário)
+* 	Recomendado (o próprio Vision define o tempo ideal baseado na complexidade e tamanho do dataset e da tarefa a ser realizada)
+* 	Rápido (também definido pelo próprio Vision, mas consideravelmente mais rápido, e consequentemente menos preciso)
+* 	Customizado (definido pelo usuário)
 A precisão do modelo, obviamente, é fortemente dependente do seu tempo de treino, portanto, em geral, a opção Recomendada é a recomendada (rsrs). Novamente, escolha um nome bastante descritivo que você vá lembrar futuramente.
 [](./Images/Image_28)
 
