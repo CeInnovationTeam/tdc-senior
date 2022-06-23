@@ -76,4 +76,93 @@ Faça login no OCI Cloud Console. Usando o menu Burger no canto superior esquerd
 
 ![](./Images/IMG_006.PNG)
 
+Isso o levará à página de visão geral dos trabalhos de transcrição. À esquerda, você pode alternar entre a página de listagem de trabalhos de visão geral e transcrição. Na documentação, você pode encontrar links úteis relevantes para o serviço de fala OCI
+
+![](./Images/IMG_007.PNG)
+
+## Criar e gerenciar trabalho de transcrição
+
+1 - Navegue até o OCI Speech
+
+Clique em "Transcription Job" para navegar até a lista de trabalhos de transcrição.
+
+2 - Criar trabalho de transcrição
+
+Selecione o compartimento no qual você deseja criar seu trabalho de transcrição e clique no botão "Criar trabalho de transcrição" para iniciar o processo de criação do trabalho.
+
+![](./Images/IMG_008.PNG)
+
+3 - Insira as informações do trabalho na página de informações básicas
+
+Esta página está dividida em três seções
+**Job Information**: Opcionalmente, insira um nome e uma descrição para seu trabalho de transcrição, bem como escolha o compartimento em que deseja que seu trabalho esteja.
+
+**Data**: Selecione o bucket no armazenamento de objetos que contém os arquivos que você deseja transcrever e, opcionalmente, escolha onde deseja que os arquivos de saída sejam armazenados e/ou dê um prefixo aos nomes dos arquivos.
+
+**Configure transcription**: Escolha o idioma em que o áudio que deseja transcrever está e, opcionalmente, adicione filtros clicando no botão "Adicionar filtro".
+
+![](./Images/IMG_009.PNG)
+
+Clique em "Avançar" para continuar a seleção do arquivo
+
+4 - Selecione quais arquivos do Object Storage serão transcritos neste trabalho Use a alternância "Mostrar arquivos wav" para filtrar o bucket de entrada apenas para arquivos .wav Selecione um ou mais arquivos para transcrever do bucket especificado no armazenamento de objetos e clique em "Enviar".
+
+![](./Images/IMG_010.PNG)
+
+5 - Visualizar trabalho recém-criado na lista de trabalhos de transcrição
+
+Assim que o trabalho for criado, você será direcionado de volta à página da lista de trabalhos de transcrição, onde o trabalho recém-criado estará no topo. Observe que o status do trabalho provavelmente será "Aceito" ou "Em andamento"
+
+Outros estados de trabalho possíveis são "Bem-sucedido" "Falha" "Parcialmente bem-sucedido" e "Cancelado"
+
+Você pode usar o filtro de estado no canto inferior esquerdo para filtrar os trabalhos na lista com base nesses estados
+
+![](./Images/IMG_011.PNG)
+
+## Visualizando os resultados
+
+Para visualizar o resultado da transcrição, navegaremos para cada página de detalhes do trabalho e da tarefa
+
+1 - Navegando para a página de detalhes do trabalho
+
+Na página da lista de trabalhos de transcrição, clique em "Ver detalhes" através do menu de três pontos na extremidade direita do trabalho
+
+![](./Images/IMG_013.PNG)
+
+2 - Página de detalhes do trabalho
+
+A página de detalhes do trabalho é dividida em duas seções principais, na parte superior podemos ver vários metadados relacionados ao trabalho, como descrição, compartimento em que o trabalho está localizado e idioma do áudio transcrito.
+
+A segunda seção é a lista de tarefas de trabalho que mostra todos os arquivos (agora tarefas dubladas) que selecionamos anteriormente para transcrever.
+
+![](./Images/IMG_014.PNG)
+
+3 - Navegue até os detalhes da tarefa individual
+
+Para visualizar os metadados e a transcrição real de cada tarefa (arquivo) neste trabalho, clique no nome da tarefa específica na lista ou clique em "Visualizar detalhes" no menu de três pontos na extremidade direita
+
+![](./Images/IMG_015.PNG)
+
+4 - Página de detalhes da tarefa
+
+Semelhante à página de detalhes do trabalho, na página de detalhes da tarefa podemos visualizar metadados específicos para a tarefa na seção acima, bem como a própria transcrição de áudio na seção inferior
+
+![](./Images/IMG_016.PNG)
+
+## Baixando e visualizando os resultados em JSON
+
+Você pode clicar em "Baixar transcrição" no canto superior esquerdo para baixar a transcrição no formato JSON. Clique no botão "Mostrar botão JSON" para visualizar a transcrição no formato JSON.
+
+![](./Images/IMG_017.png)
+
+Clique no botão Mostrar resultados padrão para sair da visualização JSON.
+
+![](./Images/IMG_018.png)
+
+# ** Parabéns por concluir este laboratório :clap:
+
+
+
+
+
 
