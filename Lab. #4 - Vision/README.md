@@ -52,7 +52,7 @@ Após verificar se estamos no compartimento correto, vamos então criar um novo 
 Em seguida, importante! Selecionar o formato de dado que seu dataset conterá (imagens, textos ou documentos). Como no nosso caso trabalharemos com um classificador de imagens, selecionamos a opção de “images”:
 ![](./Images/Image_8.png)
 
-Por útlimo, selecionar o tipo de rótulo de nossas imagens, se elas são do tipo **“single label”**, **“multi-label”** ou ainda **“object detection”**. Como nosso modelo é de uma classificação onde cada imagem só pode estar em uma única categoria, cada imagem só pode ter um rótulo (covid ou normal), e portanto vamos selecionar a opção **“single label”**:
+Por útlimo, selecionar o tipo de rótulo de nossas imagens, se elas são do tipo **“single label”**, **“multi-label”** ou ainda **“object detection”**. Como nosso modelo é de uma classificação onde cada imagem só pode estar em uma única categoria, cada imagem só pode ter um rótulo (a raça do gato), e portanto vamos selecionar a opção **“single label”**:
 
 ![](./Images/Image_9.png)
 
