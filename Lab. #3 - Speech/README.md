@@ -66,3 +66,14 @@ Selecione ou arraste o arquivo e clique em carregar
 
 ![](./Images/IMG_005.PNG)
 
+Mais detalhes sobre o armazenamento de objetos podem ser encontrados [nesta página](https://oracle.github.io/learning-library/oci-library/oci-hol/object-storage/workshops/freetier/index.html?lab=object-storage).
+
+## Transcreva áudio com o console
+
+Nesta sessão, você aprenderá a usar o serviço do OCI Speech por meio do console na nuvem.
+
+Faça login no OCI Cloud Console. Usando o menu Burger no canto superior esquerdo, navegue até o menu Analytics e AI e clique nele e selecione o item Idioma em serviços AI.
+
+![](./Images/IMG_006.PNG)
+
+
