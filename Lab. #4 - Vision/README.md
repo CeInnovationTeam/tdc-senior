@@ -9,7 +9,7 @@ A sequência:
 Menu de Hamburger -> Storage -> Object Storage -> Buckets
 
 Menu de Hamburger
-![](./Images/Image_1)
+![](./Images/Image_1.png)
 
 Storage
 ![](./Images/Image_2)
