@@ -159,7 +159,7 @@ Clique no botão Mostrar resultados padrão para sair da visualização JSON.
 
 ![](./Images/IMG_018.png)
 
-# ** Parabéns por concluir este laboratório** :clap:
+# ** Parabéns por concluir este laboratório ** :clap:
 
 
 
